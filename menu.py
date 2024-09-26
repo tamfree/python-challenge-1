@@ -162,54 +162,68 @@ while place_order:
     else:
         # Tell the customer they didn't select a number
         print("You didn't select a number.")
-   """ 
+   
     while True:
         # Ask the customer if they would like to order anything else
         keep_ordering = input("Would you like to keep ordering? (Y)es or (N)o ")
 
         # 5. Check the customer's input
-        if keep_ordering.upper() == 'Y':
+        match keep_ordering.upper():
+            case "Y":
                 # Keep ordering
+                # Exit the keep ordering question loop
+                break
+            case "N":
+                # Complete the order
+                # Since the customer decided to stop ordering, thank them for
+                # their order
+                print("++++Thank you for your order++++")
+                place_order = False
 
                 # Exit the keep ordering question loop
                 break
-        elif keep_ordering.upper() == 'N':
-                # Complete the order
-
-                # Since the customer decided to stop ordering, thank them for
-                # their order
-                print("Thank you for your order")
-
-                # Exit the keep ordering question loop
-
-
+            case _:
                 # Tell the customer to try again
+                print(f"{keep_ordering} is not a valid option. Please try again.")
 
 
 # Print out the customer's order
+print("----------------------------------------------")
 print("This is what we are preparing for you.\n")
 
 # Uncomment the following line to check the structure of the order
 #print(order)
+print(list(enumerate(customer_order_list)))
 
 print("Item name                 | Price  | Quantity")
 print("--------------------------|--------|----------")
 
+ITEM_DASH_COUNT = 26
+PRICE_DASH_COUNT = 8
+
+total_per_item_list =  []
 # 6. Loop through the items in the customer's order
-
+for order_index, order_dict in enumerate(customer_order_list):
+     
     # 7. Store the dictionary items as variables
+    curr_item_name = order_dict[CUST_ORD_ITEM_NAME_KEY]
+    curr_item_price = order_dict[CUST_ORD_PRICE_KEY]
+    curr_item_quantity = order_dict[CUST_ORD_QUANTITY_KEY]
 
+    #since we have these values, let's calculate the total for these items
+    total_per_item_list.insert(order_index, float(curr_item_price)* int(curr_item_quantity))
 
     # 8. Calculate the number of spaces for formatted printing
-
-
     # 9. Create space strings
-
+    curr_item_spaces = " " * (ITEM_DASH_COUNT - len(curr_item_name))
+    curr_price_spaces = " " * (PRICE_DASH_COUNT - len(str(curr_item_price)) - 2)
 
     # 10. Print the item name, price, and quantity
-
+    print(f"{curr_item_name}{curr_item_spaces}| ${curr_item_price}{curr_price_spaces}| {curr_item_quantity}")
 
 # 11. Calculate the cost of the order using list comprehension
 # Multiply the price by quantity for each item in the order list, then sum()
 # and print the prices.
-"""
+print("----------------------------------------------")
+print(f"Grand Total: {sum(total_per_item_list)}")
+print("----------------------------------------------")
